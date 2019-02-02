@@ -1,0 +1,16 @@
+PCAN-USB interface
+* download current driver package http://www.peak-system.com/fileadmin/media/linux/index.htm
+* extract driver packaga
+* change into the directory
+* run
+	> make clean
+* make chardev version of the driver, run: 
+	> make NET=NO_NETDEV_SUPPORT
+* start installation process, run:
+	> sudo make install
+* reboot the machine
+* check ndev state of PEAK-System CAN interface, run
+	> cat /proc/pcan
+
+Mover4 cpp test application
+* https://github.com/CPR-Robots/Mover4

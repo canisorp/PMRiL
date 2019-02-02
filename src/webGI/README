@@ -1,0 +1,29 @@
+RUN THE ROSBRIDGE SERVER
+>roslaunch rosbridge_server rosbridge_websocket.launch
+
+CONFIGURE PORT NUMBER OF LOCALHOST (DEFAULT: 9090)
+<launch>
+  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
+     <arg name="port" value="9090"/>
+  </include>
+</launch>
+
+SET rosbridge ON ROS
+source /opt/ros/<rosdistro>/setup.bash
+
+WEB INTERFACE CONTROLS
+press Connect
+press Enable 
+
+press Reset if Mover4 is unresponsive
+
+GripperOpen, GripperClose
+
+w - forward
+s - reverse
+a - left
+d - right
+
+press and hold to move joints 1, 2 and 3 up and down
+arrow left - rotate joint 0 to the left
+arrow right - rotate joint 0 to the right

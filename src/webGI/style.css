@@ -1,0 +1,57 @@
+.container {
+  width: 700px;
+  margin: auto;
+}
+
+.WebRTC{
+  width: 680px;
+  height: 500px;
+  background:rgba(226, 225, 225, 0.973);
+  border-radius: 8px;
+  margin: 10px auto;
+  padding: 10px;
+}
+
+video{
+  padding: 5px;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 6px;
+}
+
+.Mover4{
+  width: 314px;
+  background:rgba(226, 225, 225, 0.973);
+  border-radius: 8px;
+  margin: 10px auto;
+  padding: 10px;
+}
+
+button {
+  background-color: rgba(136, 173, 221, 0.712);
+  border-bottom-color: black;
+  border-right-color: black;
+  border-radius: 8px;
+  color: rgb(19, 46, 71);
+  padding: 5px 5px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 5px 2px;
+  cursor: pointer;
+  width: 150px;
+}
+
+.btnMid{
+  width: 200px;
+}
+
+button:active {
+  color: rgb(173, 54, 6);
+}
+
+button::-moz-focus-inner{
+  border: 0;
+}
+

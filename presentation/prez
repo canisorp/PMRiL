@@ -1,0 +1,61 @@
+Teleupravljanje mobilnom bazom i robotskim manipulatorom
+
+kolegij:
+     ▸ Programiranje mobilnih robota i letjelica
+studenti abecedno:
+     ▸ Filip Bašić, Joško Jukić, Ante Lojić Kapetanović, Ana Šćulac
+
+@ros.png
+ROS Kinetic logo
+
+SADRŽAJ
+• zadatak praktičnog rada
+• hardware
+• ros
+• software
+
+UVOD
+• sklopovski povezati mobilnu bazu sa Mover4 manipulatorom
+• upravljanje putem bežičnog joysticka
+• upravljanje putem web grafičkog sučelja uz video stream (WebRTC)
+• upravljanje (inverzna kinematika)
+
+HARDWARE
+• mobilna baza - paletar
+• CPR Mover4 - robotski manipulator
+• PCAN-USB komunikacijski protokol
+
+@Mover4.png
+Mover4 CPR robotska ruka
+
+ROS
+• Subscriber-Publisher komunikacija
+• master:
+     ▸ roscore
+• čvorovi:
+     ▸ joy
+     ▸ joy_hvataljka.py
+     ▸ joy_interpreter.py
+• server:
+     ▸ rosbridge_server 
+
+SOFTWARE
+• Ubuntu 16.04
+• ROS Kinetic
+• Python 2.7
+• Rosbridge server
+
+
+ZA KRAJ
+• zaključak
+• demonstracija
+• uvođenje inverzne kinematike
+
+HVALA NA PAŽNJI
+• pitanja
+• za sva dodatna pitanja: 
+      ▸ fbasic00 
+      ▸ jjukic00 
+      ▸ alojic00 
+      ▸ ascula00
+  @fesb.hr

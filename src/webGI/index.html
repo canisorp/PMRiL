@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="style.css">
+<script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+<script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+
+<script type="text/javascript" type="text/javascript">
+  // Connecting to ROS
+  // -----------------
+
+  // ros node object for communication with a rosbridge server
+  var ros = new ROSLIB.Ros({
+    url : 'ws://192.168.2.249:8080'
+  });
+
+  ros.on('connection', function() {
+    console.log('Connected to websocket server.');
+  });
+
+  ros.on('error', function(error) {
+    console.log('Error connecting to websocket server: ', error);
+  });
+
+  ros.on('close', function() {
+    console.log('Connection to websocket server closed.');
+  });
+
+  // Publishing a Topic /CPRMoverCommands
+  // ------------------
+
+  var publisherCmd = new ROSLIB.Topic({
+    ros : ros,
+    name : '/CPRMoverCommands',
+    messageType : 'std_msgs/String'
+  });
+
+  var conn = new ROSLIB.Message(
+    {
+      data : 'Connect'
+    }
+  );
+  var en = new ROSLIB.Message(
+    {
+      data : 'Enable'
+    }
+  );
+  var rst = new ROSLIB.Message(
+    {
+      data : 'Reset'
+    }
+  );
+  var opn = new ROSLIB.Message(
+    {
+      data : 'GripperOpen'
+    }
+  );
+  var cls = new ROSLIB.Message(
+    {
+      data : 'GripperClose'
+    }
+  );
+  
+  // Publishing a Topic /CPRMoverJointVel
+  // ------------------
+  var vel = 50.0;
+  var currentJointPosition = [0.0, 0.0 ,0.0, 0.0, 0.0, 0.0]
+
+  var publisherVel = new ROSLIB.Topic({
+    ros : ros,
+    name : '/CPRMoverJointVel',
+    messageType : 'sensor_msgs/JointState'
+  });
+
+  function setMsg(j1, j2, j3, j4){
+    var msg = new ROSLIB.Message({ 
+        velocity: [j1, j2, j3, j4, 0.0, 0.0]
+    });
+    publisherVel.publish(msg);
+  }
+  
+  var vel1 = 0.0;
+  var vel2 = 0.0;
+  var vel3 = 0.0;
+  var vel4 = 0.0;
+
+  var msgStop = new ROSLIB.Message({ 
+    velocity: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  });
+
+  function setMsg(j1, j2, j3, j4){
+    vel1 = j1;
+    vel2 = j2;
+    vel3 = j3;
+    vel4 = j4;
+
+    var msg = new ROSLIB.Message({ 
+        velocity: [vel1, vel2, vel3, vel4, 0.0, 0.0]
+      });
+
+    if(vel1 > 0 && currentJointPosition[0] > 2.5){
+      msg = msgStop;
+    }
+    else if(vel1 < 0 && currentJointPosition[0] < -1.05){
+      msg = msgStop;
+    }
+    else if(vel2 > 0 && currentJointPosition[1] > 1.03){
+      msg = msgStop;
+    }
+    else if(vel2 < 0 && currentJointPosition[1] < -0.48){
+      msg = msgStop;
+    }
+    else if(vel3 > 0 && currentJointPosition[2] > 2.35){
+      msg = msgStop;
+    }
+    else if(vel3 < 0 && currentJointPosition[2] < -0.65){
+      msg = msgStop;
+    }
+    else if(vel4 > 0 && currentJointPosition[3] > 2.0){
+      msg = msgStop;
+    }
+    else if(vel4 < 0 && currentJointPosition[3] < -2.0){
+      msg = msgStop;
+    }
+
+    publisherVel.publish(msg);
+  }
+
+  // Subscribing to a Topic /CPRMoverJointVel'
+  // ----------------------
+
+  var JointVelocity = new ROSLIB.Topic({
+    ros : ros,
+    name : '/CPRMoverJointVel',
+    messageType : 'sensor_msgs/JointState'
+  });
+  
+  JointVelocity.subscribe(function(message) {
+    console.log(JointVelocity.name + ': ' + message.velocity);
+  });
+
+  // Subscribing to a Topic /joint_states'
+  // ----------------------
+
+  var JointPosition = new ROSLIB.Topic({
+    ros : ros,
+    name : '/joint_states',
+    messageType : 'sensor_msgs/JointState'
+  });
+  
+  JointPosition.subscribe(function(message) {
+    console.log(JointPosition.name + ': ' + message.position);
+    currentJointPosition = message.position;
+    console.log("Current position:")
+    console.log(currentJointPosition);
+
+    if(vel1 > 0 && currentJointPosition[0] > 2.5){
+      publisherVel.publish(msgStop);
+    }
+    else if(vel1 < 0 && currentJointPosition[0] < -1.05){
+      publisherVel.publish(msgStop);
+    }
+    else if(vel2 > 0 && currentJointPosition[1] > 1.03){
+      publisherVel.publish(msgStop);
+    }
+    else if(vel2 < 0 && currentJointPosition[1] < -0.48){
+      publisherVel.publish(msgStop);
+    }
+    else if(vel3 > 0 && currentJointPosition[2] > 2.35){
+      publisherVel.publish(msgStop);
+    }
+    else if(vel3 < 0 && currentJointPosition[2] < -0.65){
+      publisherVel.publish(msgStop);
+    }
+    else if(vel4 > 0 && currentJointPosition[3] > 2.0){
+      publisherVel.publish(msgStop);
+    }
+    else if(vel4 < 0 && currentJointPosition[3] < -2.0){
+      publisherVel.publish(msgStop);
+    }
+  });
+
+  ros.getParams(function(params) {
+    console.log(params);
+  });
+
+  var maxVelX = new ROSLIB.Param({
+    ros : ros,
+    name : 'max_vel_y'
+  });
+
+  maxVelX.set(0.8);
+  maxVelX.get(function(value) {
+    console.log('MAX VAL: ' + value);
+  });
+
+  // Moving mobile-robot bas using arrow keys
+  // ----------------------
+
+  var publisherMR = new ROSLIB.Topic({
+    ros: ros,
+    name: '/cmd_vel',
+    messageType: 'geometry_msgs/Twist'
+  });
+
+  var straight = 0.0;
+  var turn = 0.0;
+
+  function setMR (){
+    var setMov = new ROSLIB.Message({
+      linear : {
+      x : straight,
+      y : 0.0,
+      z : 0.0
+    },
+    angular : {
+      x : 0.0,
+      y : 0.0,
+      z : turn
+    }
+    });
+    publisherMR.publish(setMov);
+  }
+
+  function paletar(e){
+    e = e || window.event;
+
+    // up - W
+    if (e.keyCode == '87') {
+      straight = 0.1;
+      setMR();
+    }
+    // down - S
+    else if (e.keyCode == '83') {
+      straight = -0.1;
+      setMR();
+    }
+    // left - A
+    else if (e.keyCode == '65') {
+      turn = 0.2;
+      setMR();
+    }
+    // right - D
+    else if (e.keyCode == '68') {
+      turn = -0.2;
+      setMR();
+    }
+  }
+
+  // stopping the paletar
+  function paletarStop(e){
+    e = e || window.event;
+    if (e.keyCode == '87') {
+      straight = 0.0;
+      setMR();
+    }
+    else if (e.keyCode == '83') {
+      straight = 0.0;
+      setMR();
+    }
+    else if (e.keyCode == '65') {
+      turn = 0.0;;
+      setMR();
+    }
+    else if (e.keyCode == '68') {
+      turn = 0.0;
+      setMR();
+    }
+  }
+
+  document.addEventListener('keydown', (event) => paletar(event));
+  document.addEventListener('keyup', (event) => paletarStop(event));
+  
+</script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="WebRTC">
+      <video autoplay playsinline></video>
+      <script src="webrtcMain.js"></script>
+    </div>
+
+    <div class="Mover4">
+      <div class="vels">
+        <div class="Joint1">
+          <button class="btnLeft" onmousedown="setMsg(vel, 0.0, 0.0, 0.0)" 
+            onmouseup="setMsg(0.0, 0.0, 0.0, 0.0)" onmouseout="setMsg(0.0, 0.0, 0.0, 0.0)">Joint1 LEFT</button>
+          <button class="btnRight" onmousedown="setMsg(-vel, 0.0, 0.0, 0.0)" 
+          onmouseup="setMsg(0.0, 0.0, 0.0, 0.0)" onmouseout="setMsg(0.0, 0.0, 0.0, 0.0)">Joint1 RIGHT</button>
+        </div>
+        <div class="Joint2">
+          <button class="btnLeft" onmousedown="setMsg(0.0, -vel, 0.0, 0.0)" 
+          onmouseup="setMsg(0.0, 0.0, 0.0, 0.0)" onmouseout="setMsg(0.0, 0.0, 0.0, 0.0)">Joint2 UP</button>
+          <button class="btnRight" onmousedown="setMsg(0.0, vel, 0.0, 0.0)" 
+          onmouseup="setMsg(0.0, 0.0, 0.0, 0.0)" onmouseout="setMsg(0.0, 0.0, 0.0, 0.0)">Joint2 DOWN</button>
+        </div>
+        <div class="Joint3">
+          <button class="btnLeft" onmousedown="setMsg(0.0, 0.0, -vel, 0.0)" 
+          onmouseup="setMsg(0.0, 0.0, 0.0, 0.0)" onmouseout="setMsg(0.0, 0.0, 0.0, 0.0)">Joint3 UP</button>
+          <button class="btnRight" onmousedown="setMsg(0.0, 0.0, vel, 0.0)" 
+          onmouseup="setMsg(0.0, 0.0, 0.0, 0.0)" onmouseout="setMsg(0.0, 0.0, 0.0, 0.0)">Joint3 DOWN</button>
+        </div>
+        <div class="Joint4">
+          <button class="btnLeft" onmousedown="setMsg(0.0, 0.0, 0.0, -vel)" 
+          onmouseup="setMsg(0.0, 0.0, 0.0, 0.0)" onmouseout="setMsg(0.0, 0.0, 0.0, 0.0)">Joint4 UP</button>
+          <button class="btnRight" onmousedown="setMsg(0.0, 0.0, 0.0, vel)" 
+          onmouseup="setMsg(0.0, 0.0, 0.0, 0.0)" onmouseout="setMsg(0.0, 0.0, 0.0, 0.0)">Joint4 DOWN</button>
+        </div>
+      </div>
+      
+      <hr/>
+
+      <div class='cmds'>
+        <div style='margin: auto; width: 200px'>
+          <button class="btnMid" onclick=publisherCmd.publish(conn)>Connect</button></br>
+        </div>   
+
+        <button onclick=publisherCmd.publish(rst)>Reset</button>
+       
+        <button onclick=publisherCmd.publish(en)>Enable</button>
+     
+        <button onclick=publisherCmd.publish(opn)>Gripper Open</button>
+        
+        <button onclick=publisherCmd.publish(cls)>Gripper Close</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

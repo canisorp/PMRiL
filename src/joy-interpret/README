@@ -1,0 +1,26 @@
+deployment
+* create new ros package in ~/catkin_ws/src directory
+	> catkin_create_pkg joy-interpret
+
+* move python scripts to the newly created /joy-interpret/src directory
+
+* make them executable
+	> chmod +x *.py
+
+* go back to catkin_ws directory
+
+* run
+	> catkin_make
+
+* if there's no errors, both joy-paletar.py and joy-Mover4.py will be ready for running
+
+* run 
+	> roscore # creating rosmaster
+	> rosrun joy-interpret joy-paletar.py # creating node for publishing messages on /cmd-vel topic
+	> rosrun joy-interpret joy-Mover4.py # creating node for publishing messages on /CPRMover4JointVel and /CPRMoverCommands topics
+
+* to actually manipulate mobile base and Mover4 there are some dependencies and launchers that are prerequisites
+	> roslaunch paletar_launchers full.launch # connecting differential motor and mobile base computer
+	> rosrun joy joy-node # listening to the wireless joystick
+
+* control buttons are defined in README.md

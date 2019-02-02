@@ -1,0 +1,21 @@
+MADE POSSIBLE BY >>>SUCKLESS<<< STATE OF MIND!!!
+       suckless: https://suckless.org
+       sent: https://tools.suckless.org/sent/
+
+1. open presentation with sent:
+> sent prez
+
+2. enjoy
+
+(*) for changing background/foreground color go to:
+> cd ~/sent
+
+and open config.h script:
+> nano config.h
+
+then change background and foreground color (hex format)
+
+save the config.h file and on the same path run:
+> make clean
+> make
+> sudo make install
