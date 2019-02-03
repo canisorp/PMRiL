@@ -1,34 +1,36 @@
-# Teleupravljanje mobilnom bazom i robotskim manipulatorom
+# Mobile base and robotic manipulator telecontrol
 
-Sklopovski povezana mobilna baza (paletar) s robotskim manipulatorom ([CPR Mover 4](https://cpr-robots.com/education#Mover4)) i implementirana mogućnost upravljanja s oba podsustava butem bežičnog *joysticka*. Ista mogućnost implementirana i putem web grafičkog sučelja koja ima mogućnost prikaz videa s web kamere potavljene na robotu. Upravljanje robotskim manipulatorom ostvareno je putem inverznog kinematičkog pristupa.
+Robotic arm ([CPR Mover 4](https://cpr-robots.com/education#Mover4)) has been connected to [differetnial wheeled mobile robot](https://en.wikipedia.org/wiki/Differential_wheeled_robot) and the possibility of controlling both sub-systems has been implemented through wireless joystick. The same  functionality has been implemented through  WEB GUI with live stream of movement of tele-controlled robotic arm - mobile base system. Inverse kinematics were the core idea of the robot movemenet, basically inverse kinematics makes use of the kinematics equations to determine the joint parameters that provide a desired position for robotic arm's end-effector (gripper).
 
-## Preduvjeti
+(picture goes here)
 
-### *Hardware*
+## Prerequisites
 
-* mobilna baza (paletar) - sa centralnim računalom koje radi na Linuxu te sa vlastitom lokalnom mrežom
-* manipulator (robotska ruka) - povezana na 12V napajanje i na centralno računalo paletara USB-CAN komunikacijskim protokolom
+### Hardware
 
-### *Software*
+* mobile base (paletar) - with central processing computer running Linux OS and with connected router for creating own local area network
+* manipulator (robotic arm) - connected to 12V VCC and to mobile base's computer via USB-CAN communication protocol
 
-* bilo koja distribucija Linuxa na računalu mobilne baze
-* [ROS](http://www.ros.org/), u konkretnom slučaju [ROS kinetic](http://wiki.ros.org/kinetic) - fleksibilan *framework* za razvoj robotskog softvera
-* [Peak-System CAN sučelje](http://www.peak-system.com/fileadmin/media/linux/index.htm) - osgirava mogućnost komunikacije robotske ruke s ROS-om putem PCAN-USB komunikacijskog protokola, za instalaciju i test rada CPR Mover 4 robotske ruke posjetiti službeni GitHub profil [CPR-Robots](https://github.com/CPR-Robots/Mover4) 
+### Software
+
+* any Linux distro will probably work fine on central computer of the mobile base
+* [ROS](http://www.ros.org/), in our case [ROS kinetic](http://wiki.ros.org/kinetic) - flexible framework for robotic software development
+* [Peak-System CAN interface](http://www.peak-system.com/fileadmin/media/linux/index.htm) - provides communication  of the robotic arm with ROS via PCAN-USB communication protocol, installation process and test case of CPR Mover4 robotic arm check out official GitHub profile [CPR-Robots](https://github.com/CPR-Robots/Mover4) 
 * Rosbridge_suite
 
-## Razvoj
+## Dev
 
 TBA
 
-## Instalacija i pokretanje
+## Installation and getting started
 
 TBA
 
-## Autori
+## Authors
 
 * Filip Bašić
 * Joško Jukić
 * Ante Lojić Kapetanović
 * Ana Šćulac
 
-za kolegij [Programiranje mobilnih robota](https://nastava.fesb.unist.hr/nastava/predmeti/9687)
+for electronics engineering graduate course [Programming of mobile robots and drones[222]](https://nastava.fesb.unist.hr/nastava/predmeti/9687).
