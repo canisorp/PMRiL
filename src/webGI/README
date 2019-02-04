@@ -1,3 +1,4 @@
+-------------ROSBRIDGE-------------
 RUN THE ROSBRIDGE SERVER
 >roslaunch rosbridge_server rosbridge_websocket.launch
 
@@ -8,10 +9,47 @@ CONFIGURE PORT NUMBER OF LOCALHOST (DEFAULT: 9090)
   </include>
 </launch>
 
-SET rosbridge ON ROS
+SET ROSBRIDGE ON ROS
 source /opt/ros/<rosdistro>/setup.bash
 
-WEB INTERFACE CONTROLS
+
+-------------USB_CAM-------------
+documentation: http://wiki.ros.org/usb_cam
+
+installation: https://github.com/ros-drivers/usb_cam
+	- clone to ~/catkin_ws/src directory
+	- go to ~/catkin_ws directory
+	- run:
+		> catkin_make
+
+running: the usb_cam_node interfaces with standard USB cameras usin libusb_cam 
+	- run:
+		> rosrun usb_cam usb_cam_node
+	- images are stored as 8-bit value list of pixels
+	- subscribe on /usb_cam/image_raw/compressed topic
+
+
+-------------WebRTC-------------
+documentation: http://wiki.ros.org/webrtc
+
+installation: https://github.com/RobotWebTools/webrtc_ros 
+	- follow installation process for usb_cam interface
+
+running: provides a way of streaming ROS topics to a web GUI
+	- run:
+		> roslaunch webrtc_ros_server webrtc.launch
+	- default port: 8080
+
+-------------web interface-------------
+- install apache2 server
+- in /var/www/html put index.html webrtcMain.js and style.css 
+- port: 80 (http)
+- change IP of our server to your server's IP: 
+	  var ros = new ROSLIB.Ros({
+               url : 'ws://<insert-your-IP-here>:8080'
+           });
+
+WEB INTERFACE CONTROLS:
 press Connect
 press Enable 
 
