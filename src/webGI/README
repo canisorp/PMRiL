@@ -24,7 +24,7 @@ installation: https://github.com/ros-drivers/usb_cam
 
 running: the usb_cam_node interfaces with standard USB cameras usin libusb_cam 
 	- run:
-		> rosrun usb_cam usb_cam_node
+		> roslaunch usb_cam usb_cam-test.launch
 	- images are stored as 8-bit value list of pixels
 	- subscribe on /usb_cam/image_raw/compressed topic
 
@@ -37,7 +37,7 @@ installation: https://github.com/RobotWebTools/webrtc_ros
 
 running: provides a way of streaming ROS topics to a web GUI
 	- run:
-		> roslaunch webrtc_ros_server webrtc.launch
+		> roslaunch webrtc_ros webrtc_ros_server_node
 	- default port: 8080
 
 -------------web interface-------------
@@ -46,7 +46,7 @@ running: provides a way of streaming ROS topics to a web GUI
 - port: 80 (http)
 - change IP of our server to your server's IP: 
 	  var ros = new ROSLIB.Ros({
-               url : 'ws://<insert-your-IP-here>:8080'
+               url : 'ws://<insert-your-IP-here>:9090'
            });
 
 WEB INTERFACE CONTROLS:

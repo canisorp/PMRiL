@@ -12,7 +12,7 @@
 
   // ros node object for communication with a rosbridge server
   var ros = new ROSLIB.Ros({
-    url : 'ws://192.168.2.249:8080'
+    url : 'ws://192.168.2.249:9090'
   });
 
   ros.on('connection', function() {
@@ -73,13 +73,6 @@
     messageType : 'sensor_msgs/JointState'
   });
 
-  function setMsg(j1, j2, j3, j4){
-    var msg = new ROSLIB.Message({ 
-        velocity: [j1, j2, j3, j4, 0.0, 0.0]
-    });
-    publisherVel.publish(msg);
-  }
-  
   var vel1 = 0.0;
   var vel2 = 0.0;
   var vel3 = 0.0;
@@ -138,6 +131,7 @@
   
   JointVelocity.subscribe(function(message) {
     console.log(JointVelocity.name + ': ' + message.velocity);
+    
   });
 
   // Subscribing to a Topic /joint_states'
@@ -185,28 +179,31 @@
     console.log(params);
   });
 
-  var maxVelX = new ROSLIB.Param({
-    ros : ros,
-    name : 'max_vel_y'
-  });
-
-  maxVelX.set(0.8);
-  maxVelX.get(function(value) {
-    console.log('MAX VAL: ' + value);
-  });
-
-  // Moving mobile-robot bas using arrow keys
+  // Subscribing to a Topic /usb_cam/image_raw/compressed
   // ----------------------
 
+  var stream = new ROSLIB.Topic({
+    ros : ros,
+    name : '/usb_cam/image_raw/compressed',
+    messageType : 'sensor_msgs/CompressedImage'
+  });
+
+
+  stream.subscribe(function(message){
+    var rawData = message.data;
+    //console.log(atob(rawData));
+    document.getElementById("image").src = "data:image/jpeg;base64, "+rawData;
+  });
+
+ // Moving mobile-robot bas using arrow keys
+  // ----------------------
   var publisherMR = new ROSLIB.Topic({
     ros: ros,
     name: '/cmd_vel',
     messageType: 'geometry_msgs/Twist'
   });
-
   var straight = 0.0;
   var turn = 0.0;
-
   function setMR (){
     var setMov = new ROSLIB.Message({
       linear : {
@@ -222,10 +219,8 @@
     });
     publisherMR.publish(setMov);
   }
-
   function paletar(e){
     e = e || window.event;
-
     // up - W
     if (e.keyCode == '87') {
       straight = 0.1;
@@ -247,7 +242,6 @@
       setMR();
     }
   }
-
   // stopping the paletar
   function paletarStop(e){
     e = e || window.event;
@@ -268,18 +262,17 @@
       setMR();
     }
   }
-
   document.addEventListener('keydown', (event) => paletar(event));
   document.addEventListener('keyup', (event) => paletarStop(event));
-  
 </script>
 </head>
 
 <body>
   <div class="container">
     <div class="WebRTC">
-      <video autoplay playsinline></video>
-      <script src="webrtcMain.js"></script>
+        <image id="image">
+
+        </image>
     </div>
 
     <div class="Mover4">
@@ -329,3 +322,4 @@
   </div>
 </body>
 </html>
+
