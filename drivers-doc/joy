@@ -1,0 +1,21 @@
+JOY for ROS kinetic
+Drivers for a generic Linux joystick.
+Package contains joy_node, a node that interfaces a generic Linux joystick to ROS.
+The node is publishing a sensor_msgs/Joy message, which contains the current state of each one of the joystick's button and axes.
+
+official documentation:
+* http://docs.ros.org/api/joy/html/
+
+download:
+* https://github.com/ros-drivers/joystick_drivers/tree/master/joy
+
+installation:
+* create ros package in src directory in ~/caktin_ws
+* clone GitHub repo above in newly created package
+* catkin_make package
+
+getting started:
+* connect wireless joysticks dongle to a computer
+* start joy joy_node with rosrun command
+* wait until the joystick is ready
+* every button-press will be logged into joy topic
