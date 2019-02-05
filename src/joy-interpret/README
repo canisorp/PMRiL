@@ -14,10 +14,17 @@ deployment
 
 * if there's no errors, both joy-paletar.py and joy-Mover4.py will be ready for running
 
-* run 
+* run
 	> roscore # creating rosmaster
 	> rosrun joy-interpret joy-paletar.py # creating node for publishing messages on /cmd-vel topic
 	> rosrun joy-interpret joy-Mover4.py # creating node for publishing messages on /CPRMover4JointVel and /CPRMoverCommands topics
+
+	or
+
+	> roscore
+	> rosrun joy-interpret joy-concurrent.py # creating node for publishing messages on all three topics allowing user to simultaneously
+																					 # manipulate mobile base and Mover4 robot arm
+																					 # changing controls using R1 button
 
 * to actually manipulate mobile base and Mover4 there are some dependencies and launchers that are prerequisites
 	> roslaunch paletar_launchers full.launch # connecting differential motor and mobile base computer
