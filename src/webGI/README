@@ -29,17 +29,6 @@ running: the usb_cam_node interfaces with standard USB cameras usin libusb_cam
 	- subscribe on /usb_cam/image_raw/compressed topic
 
 
--------------WebRTC-------------
-documentation: http://wiki.ros.org/webrtc
-
-installation: https://github.com/RobotWebTools/webrtc_ros 
-	- follow installation process for usb_cam interface
-
-running: provides a way of streaming ROS topics to a web GUI
-	- run:
-		> roslaunch webrtc_ros webrtc_ros_server_node
-	- default port: 8080
-
 -------------web interface-------------
 - install apache2 server
 - in /var/www/html put index.html webrtcMain.js and style.css 
